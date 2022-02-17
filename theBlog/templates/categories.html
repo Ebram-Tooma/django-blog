@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+{% comment %} {% if category_posts %} {% endcomment %}
+    <h1> {{ cats }} Category</h1>
+    {{ cats }}
+</ul>
+    {% for post in category_posts %}
+    
+            <li>
+                <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a> - 
+                {{ post.author.first_name }} 
+                {{ post.author.last_name }} -
+                {{ post.post_date }} 
+
+                 {% if user.is_authenticated %}
+                <small>
+                   - <a href="{% url 'update_post' post.pk %}">(Edit)</a> -
+                    <a href="{% url 'delete_post' post.pk %}">(Delete)</a>
+            </small>
+                {%endif%}
+            <br />
+            {{ post.body | slice:":200" | safe }}
+        </li>
+    {% endfor %}
+    </ul>
+    {% comment %} {% else %}
+    <h1> Sorry this page does not exist </h1>
+    {% endif %} {% endcomment %}
+{% endblock %}
