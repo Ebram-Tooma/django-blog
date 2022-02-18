@@ -22,7 +22,8 @@
                 {%endif%}
 
             <br />
-            {{ post.body | slice:":200" | safe }}
+            {{post.snippet}}
+            {% comment %} {{ post.body | slice:":200" | safe }} {% endcomment %}
         </li>
     {% endfor %}
 </ul>
