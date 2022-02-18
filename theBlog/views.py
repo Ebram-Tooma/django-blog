@@ -7,9 +7,17 @@ from django.http import HttpResponseRedirect
 # def home (request):
 #     return render(request, 'home.html',{})
 
+#like view
 def LikeView(request, pk):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
-    post.likes.add(request.user)
+    liked = False
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+        liked = False
+    else:
+        post.likes.add(request.user)
+        liked = True
+        
     return HttpResponseRedirect(reverse('post_detail', args=[str(pk)]))
 
 # home posts list view
@@ -45,15 +53,28 @@ def CategoryView(request, cats):
 class PostDetailView(DetailView):
     model = Post
     template_name = 'post_detail.html'
-    #categories menu
+    #categories menu and likes
     def get_context_data(self, *args, **kwargs):
+        #category menu variable
         cat_menu = Category.objects.all()
         context = super(PostDetailView, self).get_context_data(*args, **kwargs)
+        
+        #like variable 
         stuff = get_object_or_404(Post, id=self.kwargs['pk'])
         total_likes = stuff.total_likes()
+        
+        #liked condition
+        liked = False
+        if stuff.likes.filter(id=self.request.user.id).exists():
+            liked = True
+            
+        #passing variables to context
         context["cat_menu"] = cat_menu
         context["total_likes"] = total_likes
+        context["liked"] = liked
+
         return context
+    
 
 #adding post view
 class AddPostView(CreateView):
