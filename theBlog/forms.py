@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Category
+from .models import Post, Category, Comment
 
 #creating choices variable for category list loop
 
@@ -13,7 +13,7 @@ for item in choices:
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'title_tag', 'author','category', 'body', 'snippet')
+        fields = ('title', 'title_tag', 'author','category', 'body', 'snippet','header_image')
         
         #widget to add bootstrap class to post creation form
         widgets = {
@@ -41,5 +41,17 @@ class EditForm(forms.ModelForm):
             # 'author': forms.Select(attrs={'class': 'form-control'}),
             'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Edit Post Text'}),
             'snippet': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Edit post description that is shown in home'}),
+
+        }
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        # fields = ('title', 'title_tag', 'author', 'body',)
+        fields = ('name', 'body')
+        
+        #widget to add bootstrap class to post edit form
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'name'}),
+            'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Comment Text'}),
 
         }

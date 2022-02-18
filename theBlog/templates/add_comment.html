@@ -1,22 +1,21 @@
 {% extends 'base.html' %}
-{% block title %}Add Post To The Blog{% endblock %}
+{% block title %}Add Comment{% endblock %}
 {% block content %}
-{% if user.is_authenticated %}
-    <h1>Add Post</h1>
+{% comment %} {% if user.is_authenticated %} {% endcomment %}
+    <h1>Add Comment</h1>
     <br />
     <div class="form-group">
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST">
         {% csrf_token %}
-        {{ form.media }}
         {{ form.as_p }}
-    <button class="btn btn-secondary">Post</button>
+    <button class="btn btn-secondary">Add Comment</button>
     </div>
-    <script>
+    {% comment %} <script>
         var name = "{{ user.id }}";
         document.getElementById("userid").value = name;
     </script>
 
     {% else %}
     <h2>You're not allowed to access this page</h2>
-    {% endif %}
+    {% endif %} {% endcomment %}
     {% endblock %}
